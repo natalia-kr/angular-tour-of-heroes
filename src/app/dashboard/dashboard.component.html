@@ -1,0 +1,7 @@
+<h2>Top Heroes</h2>
+<div class="heroes-menu">
+  <a *ngFor="let hero of heroes" routerLink="/detail/{{hero.id}}"> <!--turns user clicks into router navigation (+ adds the pointing hand on the item)-->
+    {{hero.name}}
+  </a>
+</div>
+<app-hero-search></app-hero-search>

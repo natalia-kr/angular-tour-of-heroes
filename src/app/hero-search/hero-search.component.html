@@ -1,0 +1,12 @@
+<div id="search-component">
+    <label for="search-box">Hero Search</label>
+    <input #searchBox id="search-box" (input)="search(searchBox.value)" /> <!--The input event fires when the value of the input element has been changed:
+                                                                                every time the user types in the textbox, the event binding calls search() with the textbox value-->
+    <ul class="search-result">
+      <li *ngFor="let hero of heroes$ | async" > <!--the async pipe subscribes to the Observable and returns the latest value it has emitted-->
+        <a routerLink="/detail/{{hero.id}}">
+          {{hero.name}}
+        </a>
+      </li>
+    </ul>
+  </div>
