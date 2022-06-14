@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
+import { map, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-hero-detail',
@@ -17,6 +18,7 @@ export class HeroDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private heroService: HeroService,
+    private router: Router,
     private location: Location) { }
 
   ngOnInit(): void {
@@ -24,11 +26,20 @@ export class HeroDetailComponent implements OnInit {
   }
 
   getHero(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id')); //route.snapshot is a static image of the route information shortly after the component was created
-    this.heroService.getHero(id)
-      .subscribe(hero => this.hero = hero);
+    this.route.paramMap.pipe( //when the id in the url changes, the Observable of paramMap emits a new item...
+      map(m => m.get('id')),
+      tap(id => console.log('The id of the hero: ', id)),
+      switchMap(id => this.heroService.getHero(Number(id)))
+    ).subscribe(hero => this.hero = hero);
+    // const id = Number(this.route.snapshot.paramMap.get('id')); //route.snapshot is a static image of the route information shortly after the component was created
+    // this.heroService.getHero(id)
+    //   .subscribe(hero => this.hero = hero);
   }
   
+  public navigateToOther(): void {
+    this.router.navigate(['/detail/15']);
+  }
+
   goBack(): void {
     this.location.back();
   }

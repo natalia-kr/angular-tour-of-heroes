@@ -33,7 +33,7 @@ export class HeroSearchComponent implements OnInit {
       // ignore new term if same as previous term
       distinctUntilChanged(),
 
-      // switchMap preserves the original request order while returning only the observable from the most recent HTTP method call
+      // switchMap preserves the original request order while returning only the observable from the most recent HTTP method call. Also flattens the Observable.
       switchMap((term: string) => this.heroService.searchHeroes(term)),
     );
   }
